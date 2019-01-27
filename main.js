@@ -2,34 +2,35 @@ const global = require('./global');
 const rMethods = require('./randomize-methods');
 
 // globalne promenljive
-let keys,
-    selectedKeys,
-    mainArray;
+function randomizeCode() {
+    let keys,
+        selectedKeys,
+        mainArray;
 
-// imena varijabli
-let variableNames = [
-    {
-        a: "alpha",
-        b: "beta",
-        c: "gama",
-        d: "delta",
-        e: "epsilon"
-    },
-    {
-        a: "first",
-        b: "second",
-        c: "third",
-        d: "fourth",
-        e: "fifth"
-    }
-];
+    // imena varijabli
+    let variableNames = [
+        {
+            a: "alpha",
+            b: "beta",
+            c: "gama",
+            d: "delta",
+            e: "epsilon"
+        },
+        {
+            a: "first",
+            b: "second",
+            c: "third",
+            d: "fourth",
+            e: "fifth"
+        }
+    ];
 
-// ^.*\/\/
+    // ^.*\/\/
 
-// paterni za za zadatke
-let jsPatterns = [
-    {
-        string: `
+    // paterni za za zadatke
+    let jsPatterns = [
+        {
+            string: `
         var x, y;
         if (true) { // # if2-0
             var x = 1;
@@ -46,9 +47,9 @@ let jsPatterns = [
             console.log("x");
         }
         `
-    },
-    {
-        string: `
+        },
+        {
+            string: `
         var x, y;
         if (true) { // # if2-0 b13-0 ~ c--true--n-Math.sqrt(25)--
             var x = 1;
@@ -79,26 +80,26 @@ let jsPatterns = [
             console.log("y");
         }
         `
-    },
-    {
-        string: `
+        },
+        {
+            string: `
         var niz=[2,9,15,23]; // []
         var niz2=[000,000,000,000]; // []
         var x = 000;
         var y = 000;
         console.log(niz);
         `
-    },
-    {
-        string: `
+        },
+        {
+            string: `
     var a=5; // # r0
     var b=7;
     var c=9; // # r0
     console.log('ovo je 5','555'); // ~ c--555--n-Math.sqrt(25)--
         `
-    },
-    {
-        string: `
+        },
+        {
+            string: `
     var a = 000;
     if (a < 0) { // # if1-0
         console.log("minus");
@@ -108,9 +109,9 @@ let jsPatterns = [
         console.log("third");
     }
         `
-    },
-    {
-        string: `
+        },
+        {
+            string: `
     var lorem = 7;
     var ipsum = 100;
     var dolor= (function() {
@@ -133,71 +134,79 @@ let jsPatterns = [
         return sit();
     })();
         `,
-        vars: ["a", "b", "c", "d", "e"]
+            vars: ["a", "b", "c", "d", "e"]
+        }
+    ];
+
+    // funkcija za cuvanje rezultata
+    let result = "";
+    function logResult(...params) {
+        result += params.join(" ") + "\n";
     }
-];
 
-// funkcija za cuvanje rezultata
-let result = "";
-function logResult(...params) {
-    result += params.join(" ") + "\n";
-}
+    // dodela paterna
+    let jScript = jsPatterns[5].string;
 
-// dodela paterna
-let jScript = jsPatterns[4].string;
-
-// pravljenje niza redova
-mainArray = global.makeCodeArray(jScript);
+    // pravljenje niza redova
+    mainArray = global.makeCodeArray(jScript);
 
 
-///////////  blok randomization //////////////////////
+    ///////////  blok randomization //////////////////////
 
-mainArray = rMethods.randomizeBlocks(mainArray);
+    mainArray = rMethods.randomizeBlocks(mainArray);
 
-mainArray = rMethods.randomizeIfs(mainArray);
+    mainArray = rMethods.randomizeIfs(mainArray);
 
-mainArray = rMethods.randomizeReturns(mainArray);
+    mainArray = rMethods.randomizeReturns(mainArray);
 
-mainArray = rMethods.randomizeRows(mainArray);
-
-
-/////////// inline randomization //////////////////////
-
-mainArray = rMethods.randomizeVars(mainArray);
-
-mainArray = rMethods.randomizeMathOperators(mainArray);
-
-mainArray = rMethods.addCustomInline(mainArray);
-
-mainArray = rMethods.shuffleArrayElements(mainArray);
-
-mainArray = rMethods.randomizeIntigers(mainArray);
+    mainArray = rMethods.randomizeRows(mainArray);
 
 
-/////////// sklapanje patterna /////////////////////
-jScript = "";
-mainArray.forEach(element => {
-    jScript += element.code + "\n";
-});
+    /////////// inline randomization //////////////////////
 
-// obradjeni patern za prikaz korisniku
-let jScriptOriginal = jScript;
-jScript = 'let result = "";\n' + jScript;
+    mainArray = rMethods.randomizeVars(mainArray);
 
-// dodela return-a
-jScript = jScript.replace(/console.log/g, "logResult");
-jScript += `function logResult(...params) {
+    mainArray = rMethods.randomizeMathOperators(mainArray);
+
+    mainArray = rMethods.addCustomInline(mainArray);
+
+    mainArray = rMethods.shuffleArrayElements(mainArray);
+
+    mainArray = rMethods.randomizeIntigers(mainArray);
+
+
+    /////////// sklapanje patterna /////////////////////
+    jScript = "";
+    mainArray.forEach(element => {
+        jScript += element.code + "\n";
+    });
+
+    // obradjeni patern za prikaz korisniku
+    let jScriptOriginal = jScript;
+    jScript = 'let result = "";\n' + jScript;
+
+    // dodela return-a
+    jScript = jScript.replace(/console.log/g, "logResult");
+    jScript += `function logResult(...params) {
                 result += params.join(" ") + '\\n';
             }
             return result;`;
 
-// kreiranje funkcije
+    // kreiranje funkcije
 
-let finalFunction = new Function(jScript);
+    let finalFunction = new Function(jScript);
 
-//prikaz rezultata i paterna za korisnika
-console.log(jScriptOriginal);
-console.log(finalFunction());
+    //prikaz rezultata i paterna za korisnika
+    console.log(jScriptOriginal);
+    console.log(finalFunction());
+
+    return {
+        code: jScriptOriginal,
+        result: finalFunction()
+    }
+};
+
+module.exports = randomizeCode;
 
 
 
