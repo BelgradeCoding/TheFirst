@@ -22,6 +22,7 @@
             axios.get('/axios')
                 .then(function (response) {
                     console.log(response.data.function);
+                    console.log(response.data.result);
                     codeCanvas([response.data.function]);
                 })
                 .catch(function (error) {

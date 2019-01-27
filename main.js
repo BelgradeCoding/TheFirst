@@ -197,8 +197,8 @@ function randomizeCode() {
     let finalFunction = new Function(jScript);
 
     //prikaz rezultata i paterna za korisnika
-    console.log(jScriptOriginal);
-    console.log(finalFunction());
+    // console.log(jScriptOriginal);
+    // console.log(finalFunction());
 
     return {
         code: jScriptOriginal,
