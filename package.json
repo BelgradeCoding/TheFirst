@@ -1,0 +1,28 @@
+{
+  "name": "TheFirst",
+  "version": "1.0.0",
+  "description": "* General syntax",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/* | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefanopuloZ/TheFirst.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StefanopuloZ/TheFirst/issues"
+  },
+  "homepage": "https://github.com/StefanopuloZ/TheFirst#readme",
+  "dependencies": {
+    "fast-deep-equal": "^2.0.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.2"
+  }
+}
