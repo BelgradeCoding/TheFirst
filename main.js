@@ -145,7 +145,7 @@ function randomizeCode() {
     }
 
     // dodela paterna
-    let jScript = jsPatterns[5].string;
+    let jScript = jsPatterns[1].string;
 
     // pravljenje niza redova
     mainArray = global.makeCodeArray(jScript);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas</title>
+    <style>
+    </style>
+</head>
+
+<body>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/main3.js"></script>
+
+    <script>
+
+        function performGetRequest1() {
+
+            axios.get('/axios')
+                .then(function (response) {
+                    console.log(response.data.function);
+                    codeCanvas([response.data.function]);
+                })
+                .catch(function (error) {
+                    document.getElementById('holder').innerHTML = error;
+                });
+        }
+
+        performGetRequest1();
+
+    </script>
+</body>
+
+</html>
