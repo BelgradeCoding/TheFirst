@@ -25,7 +25,7 @@ createHiDPICanvas = function(w, h, ratio) {
   return can;
 };
 var assigment = [
-  `var alfa = 2; var delta varka kajvar dksaovarkd var()
+  ` var alfa = 2; var delta varka kajvar dksaovarkd var()
     var beta = 3;
     var ajvar = 10;
     var sigma = 2;
@@ -60,10 +60,12 @@ var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
     var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
     var kme = 23;var kme1 = 32;var kme2 = 12;
     `;
-var config = {
+var keywords = {
   searchTerms: ["var", "function", "=", "return", "console.log"]
 };
-
+config = {
+  lineHeight: 18
+}
 // Objekat regExp izraza za razlicite keyworde
 
 let regObj;
@@ -87,11 +89,11 @@ function writeRegexes(obj) {
       obj[key]["regExp"] = new RegExp("(=)", "g");
     } else if (key == "console.log") {
       obj[key]["regExp"] = new RegExp("[\\W]?\\b(console.log)\\b", "g");
-    }
+    } 
   }
 }
 function regObjInit() {
-  regObj = buildObjFromArr(config.searchTerms);
+  regObj = buildObjFromArr(keywords.searchTerms);
   writeRegexes(regObj);
 }
 // Inicijacija objekta regularnih izraza
@@ -102,18 +104,28 @@ function buildArrayFromObjKeys(obj) {
   for (const key in obj) {
     tmpArr.push(obj[key]["regExp"]);
   }
+  
   return tmpArr;
 }
 
-buildArrayFromObjKeys(regObj);
-function getAllRegIndexes(str, regarr) {
+
+// This returns ALL regex indexes within a string
+function getAllRegIndexes(str, regArr) {
   var tmpArr = [];
-  for (var i = 0; i < regarr.length; i++) {
-    var re = regarr[i],
-      str = str;
+  for (var i = 0; i < regArr.length; i++) {
+    var re = regArr[i],
+        str = str,
+        strLen = str.length,
+        bla;
     try {
       while ((match = re.exec(str)) != null) {
+        console.log(match);
+        console.log(match.index);
+        
         var position = str.indexOf(match[1].trim());
+        var bla = str.substring(position + match[1].length,str.length)
+        console.log("position",position,"noviStr",bla);
+        
         var obj = {
           name: match[1],
           index: position,
@@ -123,48 +135,52 @@ function getAllRegIndexes(str, regarr) {
       }
     } catch {}
   }
-
+  console.log(tmpArr);
+  
   return tmpArr;
-
-  // To - do - Improve by returning all instances of a number,not just first.
 }
 
-var y = 0;
-var yIndex = 18;
-var ass = jScriptOriginal.split("\n");
-var canvasHeight = ass.length * yIndex + 10;
+// Spliting assigment into array
+var taskToColor = assigment[0].split("\n");
+
+// Canvas height === number of rows * row height + offset
+var canvasHeight = taskToColor.length * config.lineHeight + 10;
 
 // canvas init
 var canvas = createHiDPICanvas(600, canvasHeight, 1);
+
+// Appending canvas
 document.body.appendChild(canvas);
+
+
 var context = canvas.getContext("2d");
 context.font = "1.1rem Georgia";
 context.fillStyle = "blue";
 
-function colorCanvas(task) {
-  for (var k = 0; k < task.length; k++) {
-    var line = task[k];
 
-    y += yIndex;
+
+// Coloring init
+colorCanvas(taskToColor);
+
+
+// Images made from canvas
+var can = document.getElementById("canvas-result");
+
+
+canvasToImage(can);
+function colorCanvas(taskArr) {
+  for (var k = 0,y = 0; k < taskArr.length; k++) {
+    var line = taskArr[k];
+
+    y += config.lineHeight;
     marker(line, 0, y);
   }
 }
 
 
-// Coloring init
-colorCanvas(ass);
-
-
-// Images made from canvas
-var can = document.getElementById("canvas-result");
-canvasToImage(can);
-
-
 function marker(str, x, y) {
   var _arrayOfRegex = buildArrayFromObjKeys(regObj);
   var strInfo = getAllRegIndexes(str, _arrayOfRegex);
-
-
   var numbers = getAllNumbers(str);
   var strings = getAllStrings(str);
 
@@ -174,7 +190,8 @@ function marker(str, x, y) {
   if (strings && strInfo) {
     strInfo = strInfo.concat(strings);
   }
-
+  console.log(strInfo);
+  
   var indexes = [];
   for (const key in strInfo) {
     if (strInfo.hasOwnProperty(key)) {
@@ -264,7 +281,6 @@ function getAllNumbers(str) {
     tmpArr.push(obj);
   }
   return tmpArr;
-  // To - do - Improve by returning all instances of a number,not just first.
 }
 
 function getAllStrings(str) {
