@@ -16,7 +16,8 @@ createHiDPICanvas = function(w, h, ratio) {
     ratio = PIXEL_RATIO;
   }
   var can = document.createElement("canvas");
-  can.setAttribute("id","canvas-result");
+  can.setAttribute("id","task-result");
+  can.classList.add('task')
   can.width = w * ratio;
   can.height = h * ratio;
   can.style.width = w + "px";
@@ -67,7 +68,7 @@ config = {
   lineHeight: 18
 }
 
-
+const container = document.getElementById("js-tasks");
 
 /**
  * Object which contains keywords and their regExp expressions
@@ -135,8 +136,6 @@ function getAllRegIndexes(str, regArr) {
         } else {
           index = match.index;
         }
-        console.log(match);
-        console.log("karakter na indexu",str.charAt(match.index));
         var obj = {
           name: match[1],
           index: index,
@@ -158,9 +157,9 @@ var canvasHeight = taskToColor.length * config.lineHeight + 10;
 
 // canvas init
 var canvas = createHiDPICanvas(600, canvasHeight, 1);
-
+//canvas.setAttribute('id','code-canvas');
 // Appending canvas
-document.body.appendChild(canvas);
+container.appendChild(canvas);
 
 
 var context = canvas.getContext("2d");
@@ -174,7 +173,7 @@ colorCanvas(taskToColor);
 
 
 // Images made from canvas
-var can = document.getElementById("canvas-result");
+var can = document.getElementById("task-result");
 
 
 canvasToImage(can);
@@ -221,7 +220,7 @@ function marker(str, x, y) {
           strInfo[position].name === "var" ||
           strInfo[position].name === "function"
         ) {
-          colorFillChange(ch, x, y, "blue");
+          colorFillChange(ch, x, y, colors.varFunction);
         } else if (strInfo[position].name === "return") {
           colorFillChange(ch, x, y, "#C586C0");
         } else if (strInfo[position].name === "=") {
@@ -254,7 +253,9 @@ function marker(str, x, y) {
 function canvasToImage(canvas) {
 	var image = new Image();
   image.src = canvas.toDataURL("image/png");
-  document.body.appendChild(image);
+  image.setAttribute('id','task-image');
+  image.classList.add('task');
+  container.appendChild(image);
 }
 function colorFillChange(char, x, y, color) {
   context.fillStyle = color;
