@@ -26,7 +26,7 @@ createHiDPICanvas = function(w, h, ratio) {
 };
 var assigment = [
   ` var alfa = 2; var delta varka kajvar dksaovarkd var()
-    var beta = 3;
+    var beta = 3;var
     var ajvar = 10;
     var sigma = 2;
     var test = "test";
@@ -66,10 +66,18 @@ var keywords = {
 config = {
   lineHeight: 18
 }
-// Objekat regExp izraza za razlicite keyworde
 
+
+
+/**
+ * Object which contains keywords and their regExp expressions
+ * ["keyword"]:[regExp]
+ */
 let regObj;
 
+
+
+// Building object from an array, most accurately building object keys
 function buildObjFromArr(arr) {
   var tmpObj = {};
   arr.forEach(function(item) {
@@ -77,7 +85,9 @@ function buildObjFromArr(arr) {
   });
   return tmpObj;
 }
-function writeRegexes(obj) {
+
+
+function writeRegexValues(obj) {
   for (const key in obj) {
     if (key == "var") {
       obj[key]["regExp"] = new RegExp("[\\W]?\\b(var)\\s\\b", "g");
@@ -94,7 +104,7 @@ function writeRegexes(obj) {
 }
 function regObjInit() {
   regObj = buildObjFromArr(keywords.searchTerms);
-  writeRegexes(regObj);
+  writeRegexValues(regObj);
 }
 // Inicijacija objekta regularnih izraza
 regObjInit();
@@ -108,34 +118,34 @@ function buildArrayFromObjKeys(obj) {
   return tmpArr;
 }
 
-
 // This returns ALL regex indexes within a string
 function getAllRegIndexes(str, regArr) {
   var tmpArr = [];
   for (var i = 0; i < regArr.length; i++) {
     var re = regArr[i],
         str = str,
-        strLen = str.length,
         bla;
     try {
       while ((match = re.exec(str)) != null) {
-        console.log(match);
-        console.log(match.index);
-        
+        var index;
+        var pos2 = match[0].indexOf(match[1]);
         var position = str.indexOf(match[1].trim());
-        var bla = str.substring(position + match[1].length,str.length)
-        console.log("position",position,"noviStr",bla);
-        
+        if(pos2 > 0){
+          index = match.index + 1;
+        } else {
+          index = match.index;
+        }
+        console.log(match);
+        console.log("karakter na indexu",str.charAt(match.index));
         var obj = {
           name: match[1],
-          index: position,
+          index: index,
           len: match[1].length
         };
         tmpArr.push(obj);
       }
     } catch {}
   }
-  console.log(tmpArr);
   
   return tmpArr;
 }
@@ -190,7 +200,7 @@ function marker(str, x, y) {
   if (strings && strInfo) {
     strInfo = strInfo.concat(strings);
   }
-  console.log(strInfo);
+
   
   var indexes = [];
   for (const key in strInfo) {
