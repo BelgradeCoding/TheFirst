@@ -1,6 +1,6 @@
 let config = {
   image: {
-    lineHeight: 22,
+    lineHeight: 20,
     font:"1.1rem Inconsolata"
   }
 }

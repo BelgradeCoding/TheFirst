@@ -3,19 +3,21 @@ var tasksHolder = document.getElementById("js-tasks");
 themer.addEventListener("change", e => {
   removeScript()
   tasksHolder.innerHTML = "";
+  
   var selectedOption = themer.options[themer.selectedIndex].text;
   if(selectedOption == "light"){
-    tasksHolder.style.backgroundColor = "white";
+    changeProp("--bg-color", "white");
+    changeProp("--txt-color","#222")
   } else {
-    //changeProp("--bg-color", "#292929");
-    tasksHolder.style.backgroundColor = "#292929";
+    changeProp("--bg-color", "#292929");
+    changeProp("--txt-color","#f1f1f1")
   }
-  tasksHolder.style
+  
   loadTheme(selectedOption);
   loader();
   setTimeout(()=>{
     addScript();
-  },500)
+  },400)
 });
 
 function addScript(scriptName) {
@@ -34,7 +36,7 @@ var loader = () => {
   tasksHolder.appendChild(div);
   setTimeout(()=>{
     tasksHolder.removeChild(div);
-  },500)
+  },400)
   
 }
 

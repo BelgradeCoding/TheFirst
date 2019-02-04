@@ -1,4 +1,4 @@
-var cccc = (function() {
+var makeImg = (function() {
   var PIXEL_RATIO = (function() {
     var ctx = document.createElement("canvas").getContext("2d"),
       dpr = window.devicePixelRatio || 1,
