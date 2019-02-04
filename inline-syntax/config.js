@@ -36,4 +36,6 @@ let loadTheme = option => {
   }
 };
 
+
+// This is call for specific theme... It can be a call by an user
 loadTheme("light");
