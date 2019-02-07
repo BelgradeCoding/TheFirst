@@ -20,7 +20,7 @@
 
             axios.get('/axios')
                 .then(function (response) {
-                    document.getElementById('holder').innerHTML = `${response.data.function}<br>${response.data.parameter}`;
+                    document.getElementById('holder').innerHTML = `${response.data.function}<br>${response.data.result}`;
                 })
                 .catch(function (error) {
                     document.getElementById('holder').innerHTML = error;

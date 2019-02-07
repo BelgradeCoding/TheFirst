@@ -2,7 +2,8 @@ const express = require('express');
 const hbs = require('express-hbs');
 const fs = require('fs');
 
-const inlineChanges = require('./inlineSyntax.js');
+const {inlineSyntax} = require('./inlineSyntax.js');
+console.log(inlineSyntax().result);
 
 const port = process.env.PORT || 3000;
 let app = express();
@@ -26,7 +27,8 @@ app.get('/', (req, res) => {
 
 app.get('/axios', (req, res) => {
     res.send({
-        function: inlineChanges().inlineFinal,
+        function: inlineSyntax().function,
+        result: inlineSyntax().result
     });
 });
 
